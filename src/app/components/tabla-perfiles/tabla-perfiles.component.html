@@ -1,0 +1,36 @@
+<kendo-grid #grid [data]="view | async" [height]="533" [pageSize]="gridState.take" [skip]="gridState.skip" [sort]="gridState.sort" [pageable]="true" [sortable]="true" (dataStateChange)="onStateChange($event)" (cellClick)="cellClickHandler($event)" (cellClose)="cellCloseHandler($event)"
+    (cancel)="cancelHandler($event)" (save)="saveHandler($event)" (remove)="removeHandler($event)" (add)="addHandler($event)" [navigable]="true">
+    <ng-template kendoGridToolbarTemplate>
+        <button kendoGridAddCommand>Nuevo perfil</button>
+        <button class='k-button' [disabled]="!editService.hasChanges()" (click)="saveChanges(grid);">Guardar cambios</button>
+        <button class='k-button' [disabled]="!editService.hasChanges()" (click)="cancelChanges(grid);">Cancelar cambios</button>
+    </ng-template>
+    <kendo-grid-column field="id_perfiles" title="Id" *ngIf="false"></kendo-grid-column>
+    <kendo-grid-column field="numero_empleado" title="Numero Empleado" editable="true"></kendo-grid-column>
+    <kendo-grid-column field="nombre" title="Nombre" editable="true"></kendo-grid-column>
+    <kendo-grid-column field="puesto" title="Puesto" editable="true"></kendo-grid-column>
+    <kendo-grid-column field="email_contacto" title="Email" editable="true"></kendo-grid-column>
+    <kendo-grid-column field="telefono_celular" title="Tel. Celular" editable="true"></kendo-grid-column>
+    <kendo-grid-column field="telefono_fijo" title="Tel Fijo" editable="true"></kendo-grid-column>
+    <kendo-grid-column field="extencion" title="Extencion" editable="true"></kendo-grid-column>
+    <kendo-grid-column field="zona" title="Zona" editable="true"></kendo-grid-column>
+    <kendo-grid-column field="id_region" title="fk_region" *ngIf="false"></kendo-grid-column>
+    <kendo-grid-column field="fk_regionDrop" title="Region" width="200">
+        <ng-template kendoGridCellTemplate let-dataItem>
+            {{obtenregion(dataItem.id_region)}}
+        </ng-template>
+        <ng-template kendoGridEditTemplate let-dataItem="dataItem" let-formGroup="formGroup">
+            <kendo-dropdownlist #namesDropDown [data]="datosRegiones" [textField]="'region'" [valueField]="'id_region'" [valuePrimitive]="true" [(ngModel)]="dataItem.id_region" (valueChange)="cambioRegion($event)">
+            </kendo-dropdownlist>
+        </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-command-column title="Comandos " width="220 ">
+        <ng-template kendoGridCellTemplate let-isNew="isNew ">
+            <button kendoGridRemoveCommand>Eliminar</button>
+            <button kendoGridSaveCommand>Add</button>
+            <button kendoGridCancelCommand>Cancel</button>
+        </ng-template>
+    </kendo-grid-command-column>
+</kendo-grid>
+
+<ng-snotify></ng-snotify>
